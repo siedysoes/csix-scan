@@ -133,13 +133,13 @@ var Rules = []Rule{
 	},
 	{
 		ID:       "db-connection-string",
-		Title:    "Database Connection String dengan kredensial",
+		Title:    "Database connection string with credentials",
 		Severity: SeverityCritical,
 		Pattern:  regexp.MustCompile(`\b((?:postgres(?:ql)?|mysql|mariadb|mongodb(?:\+srv)?|redis|amqp)://[^\s:@/"']+:[^\s@/"']+@[^\s"']+)`),
 	},
 	{
 		ID:       "basic-auth-url",
-		Title:    "URL dengan kredensial (basic auth)",
+		Title:    "URL with embedded credentials (basic auth)",
 		Severity: SeverityHigh,
 		Pattern:  regexp.MustCompile(`\bhttps?://[^\s:@/"']:[^\s@/"']+@`),
 	},
@@ -151,7 +151,7 @@ var Rules = []Rule{
 	},
 	{
 		ID:          "generic-secret-quoted",
-		Title:       "Assignment nilai seperti kredensial (dikutip)",
+		Title:       "Credential-like assignment (quoted value)",
 		Severity:    SeverityMedium,
 		Pattern:     regexp.MustCompile(`(?i)(?:password|passwd|pwd|secret|api[_-]?key|apikey|token|access[_-]?key|client[_-]?secret)\s*[:=]\s*["']([^"'\s]{8,})["']`),
 		SecretGroup: 1,
@@ -159,7 +159,7 @@ var Rules = []Rule{
 	},
 	{
 		ID:          "generic-secret-unquoted",
-		Title:       "Assignment nilai seperti kredensial (tanpa kutip)",
+		Title:       "Credential-like assignment (unquoted value)",
 		Severity:    SeverityMedium,
 		Pattern:     regexp.MustCompile(`(?i)(?:password|passwd|pwd|secret|token|api[_-]?key)\s*[:=]\s*([^\s"';,]{8,})`),
 		SecretGroup: 1,

@@ -15,7 +15,7 @@ import (
 	"github.com/siedysoes/csix-scan/internal/ui"
 )
 
-const version = "0.1.0"
+var version = "0.1.0"
 
 func main() {
 	var (
@@ -27,13 +27,13 @@ func main() {
 		maxMB       int
 		showVersion bool
 	)
-	flag.BoolVar(&jsonOut, "json", false, "output JSON (untuk CI/tooling)")
-	flag.BoolVar(&history, "history", false, "pindai juga riwayat commit git")
-	flag.BoolVar(&showSecrets, "show-secrets", false, "tampilkan nilai rahasia utuh (default: disamarkan)")
-	flag.BoolVar(&noColor, "no-color", false, "matikan warna output")
-	flag.StringVar(&exclude, "exclude", "", "nama direktori tambahan yang dilewati (dipisah koma)")
-	flag.IntVar(&maxMB, "max-file-mb", 10, "ukuran file maksimum yang dipindai (MB)")
-	flag.BoolVar(&showVersion, "version", false, "tampilkan versi")
+	flag.BoolVar(&jsonOut, "json", false, "JSON output (for CI/tooling)")
+	flag.BoolVar(&history, "history", false, "also scan git commit history")
+	flag.BoolVar(&showSecrets, "show-secrets", false, "print raw secret values (default: masked)")
+	flag.BoolVar(&noColor, "no-color", false, "disable colored output")
+	flag.StringVar(&exclude, "exclude", "", "extra directory names to skip (comma-separated)")
+	flag.IntVar(&maxMB, "max-file-mb", 10, "max file size to scan (MB)")
+	flag.BoolVar(&showVersion, "version", false, "print version")
 	flag.Parse()
 
 	if showVersion {
@@ -71,7 +71,7 @@ func main() {
 	if history {
 		hist, err := gitlog.ScanHistory(absRoot)
 		if err != nil {
-			warn("riwayat git dilewati: " + err.Error())
+			warn("git history skipped: " + err.Error())
 		} else {
 			findings = append(findings, hist...)
 		}
@@ -91,12 +91,12 @@ func main() {
 }
 
 func printHuman(root string, findings []scan.Finding, stats scan.Stats, showSecrets bool) {
-	fmt.Println(ui.Wrap(ui.Bold, "csix-scan v"+version) + ui.Wrap(ui.Gray, " — pemindai rahasia ringan untuk repo Anda"))
+	fmt.Println(ui.Wrap(ui.Bold, "csix-scan v"+version) + ui.Wrap(ui.Gray, " — lightweight secret scanner for your repository"))
 	fmt.Println(ui.Wrap(ui.Gray, "target: "+root))
 	fmt.Println()
 
 	if len(findings) == 0 {
-		fmt.Println(ui.Wrap(ui.Green, "✓ tidak ditemukan rahasia (\"secret\") di file yang dipindai"))
+		fmt.Println(ui.Wrap(ui.Green, "✓ no secrets found in the scanned files"))
 	} else {
 		for _, f := range findings {
 			sevColor := ui.Yellow
@@ -124,7 +124,7 @@ func printHuman(root string, findings []scan.Finding, stats scan.Stats, showSecr
 		bySev[f.Severity]++
 	}
 	fmt.Println()
-	fmt.Printf("%s %d temuan (critical %d, high %d, medium %d) · %d file dipindai · %.1fs\n",
+	fmt.Printf("%s %d findings (critical %d, high %d, medium %d) · %d files scanned · %.1fs\n",
 		ui.Wrap(ui.Gray, "──"), len(findings),
 		bySev[rules.SeverityCritical], bySev[rules.SeverityHigh], bySev[rules.SeverityMedium],
 		stats.FilesScanned, stats.DurationSecs)
@@ -176,5 +176,5 @@ func fatal(msg string) {
 }
 
 func warn(msg string) {
-	fmt.Fprintln(os.Stderr, ui.Wrap(ui.Yellow, "peringatan: ")+msg)
+	fmt.Fprintln(os.Stderr, ui.Wrap(ui.Yellow, "warning: ")+msg)
 }

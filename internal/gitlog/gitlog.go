@@ -28,7 +28,7 @@ func ScanHistory(root string) ([]scan.Finding, error) {
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	if err := cmd.Start(); err != nil {
-		return nil, fmt.Errorf("gagal menjalankan git: %w", err)
+		return nil, fmt.Errorf("failed to run git: %w", err)
 	}
 
 	scanner := bufio.NewScanner(stdout)
@@ -76,7 +76,7 @@ func ScanHistory(root string) ([]scan.Finding, error) {
 			strings.Contains(msg, "does not have any commits yet")) {
 			return nil, nil
 		}
-		return nil, fmt.Errorf("git log gagal: %s", msg)
+		return nil, fmt.Errorf("git log failed: %s", msg)
 	}
 	if scanErr != nil {
 		return nil, scanErr

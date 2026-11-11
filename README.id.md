@@ -15,6 +15,9 @@ ter-push ke GitHub.
 
 ## Instalasi
 
+Unduh binary siap pakai di [halaman Releases](https://github.com/siedysoes/csix-scan/releases/latest)
+(Windows / Linux / macOS, amd64 + arm64), atau:
+
 ```sh
 go install github.com/siedysoes/csix-scan@latest
 ```
@@ -31,7 +34,7 @@ csix-scan --json .             # output JSON untuk CI
 
 ## Checklist Sebelum Push ke GitHub
 
-1. Ganti `siedoyses`/`siedysoes` di `go.mod`, `main.go`, dan README
+1. Ganti `siedysoes` di `go.mod`, `main.go`, dan README
    dengan username GitHub Anda sendiri (jika berbeda).
 2. Buat repo baru bernama `csix-scan` di akun Anda.
 3. Push folder ini ke repo tersebut.
