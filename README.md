@@ -1,5 +1,7 @@
 # csix-scan
 
+![csix-scan banner](assets/banner.png)
+
 **Pemindai rahasia (secret scanner) ringan untuk repository — murni Go, nol dependency, single binary.**
 
 [![CI](https://github.com/siedysoes/csix-scan/actions/workflows/ci.yml/badge.svg)](https://github.com/siedysoes/csix-scan/actions/workflows/ci.yml)
